@@ -59,6 +59,19 @@ KEYDATA
 case "$1" in
     configure)
     install_key    
+    if [ -d '/usr/share/doc/ceibal-chrome-config/examples/google-chrome' ]; then
+        TARGET_USER="estudiante"
+        TARGET_HOME="/home/${TARGET_USER}"
+    	if [ -d "${TARGET_HOME}" -a ! -d "${TARGET_HOME}/.config/google-chrome" ]; then
+    	    if [ ! -d "${TARGET_HOME}/.config" ]; then
+                mkdir "${TARGET_HOME}/.config/"
+                chmod 700 "${TARGET_HOME}/.config"
+                chown "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.config"
+            fi
+	    cp -r /usr/share/doc/ceibal-chrome-config/examples/google-chrome "${TARGET_HOME}/.config/google-chrome"
+            chown -R "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.config/google-chrome"
+	fi
+    fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
